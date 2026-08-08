@@ -31,3 +31,19 @@ class Hand_tracker:
                         self.mp_hands.HAND_CONNECTIONS
                     )
         return img
+
+    def get_landmark_positions(self, img, hand_no=0):
+
+        lm_list = []
+        
+        if self.results and self.results.multi_hand_landmarks:
+            if len(self.results.multi_hand_landmarks) > hand_no:
+                my_hand = self.results.multi_hand_landmarks[hand_no]
+                
+                h, w, c = img.shape
+                
+                for lm_id, lm in enumerate(my_hand.landmark):
+                    cx, cy = int(lm.x * w), int(lm.y * h)
+                    lm_list.append([lm_id, cx, cy])
+                    
+        return lm_list
