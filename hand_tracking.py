@@ -19,3 +19,15 @@ class Hand_tracker:
         self.results = None
 
     def find_hand(self,img,draw = True):
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.hands.process(img_rgb)
+        if self.results.multi_hand_landmarks:
+            for hand_lms in self.results.multi_hand_landmarks:
+                if draw:
+                    # Draw the 21 landmark points and connecting lines onto the original frame
+                    self.mp_draw.draw_landmarks(
+                        img, 
+                        hand_lms, 
+                        self.mp_hands.HAND_CONNECTIONS
+                    )
+        return img
